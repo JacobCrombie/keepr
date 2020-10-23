@@ -1,4 +1,4 @@
-namespace keepr.Services
+namespace Keepr.Services
 {
     public class KeepsServices
     {

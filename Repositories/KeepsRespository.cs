@@ -1,4 +1,4 @@
-namespace keepr.Repositories
+namespace Keepr.Repositories
 {
     public class KeepsRespository
     {
