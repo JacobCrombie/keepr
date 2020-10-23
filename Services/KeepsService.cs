@@ -19,9 +19,14 @@ namespace Keepr.Services
       return _keepsRepo.GetAll();
     }
 
-    internal object GetById(int id)
+    internal Keep GetById(int id)
     {
-      throw new NotImplementedException();
+        Keep data = _keepsRepo.GetById(id);
+        if(data == null)
+        {
+            throw new Exception("Invalid Id");
+        }
+        return data;
     }
   }
 }

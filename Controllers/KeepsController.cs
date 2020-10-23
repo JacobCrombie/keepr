@@ -27,6 +27,7 @@ namespace Keepr.Controllers
           return BadRequest(e.Message);
       }
     }
+    [HttpGet("{id}")]
     public ActionResult<Keep> GetById(int id)
     {
       try
