@@ -33,5 +33,19 @@ namespace Keepr.Services
     {
       return _keepsRepo.Create(newKeep);
     }
+
+    internal Keep Edit(Keep updatedKeep)
+    {
+      Keep data = GetById(updatedKeep.Id);
+      updatedKeep.CreatorId = data.CreatorId;
+      updatedKeep.Description = data.Description;
+      updatedKeep.Name = data.Name;
+      updatedKeep.Id = data.Id;
+      updatedKeep.Img = data.Img;
+      updatedKeep.Keeps = updatedKeep.Keeps != 0 ? updatedKeep.Keeps : data.Keeps;
+      updatedKeep.Views = updatedKeep.Views != 0 ? updatedKeep.Views : data.Views;
+      updatedKeep.Shares = updatedKeep.Shares != 0 ? updatedKeep.Shares : data.Shares;
+      return _keepsRepo.Edit(updatedKeep);
+    }
   }
 }

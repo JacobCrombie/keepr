@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using CodeWorks.Auth0Provider;
 using Keepr.Models;
 using Keepr.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Keepr.Controllers
@@ -44,6 +45,7 @@ namespace Keepr.Controllers
     }
 
     [HttpPost]
+    [Authorize]
     public async Task<ActionResult<Keep>> Create([FromBody] Keep newKeep)
     {
       try
@@ -52,6 +54,21 @@ namespace Keepr.Controllers
         newKeep.CreatorId = userInfo.Id;
         newKeep.Creator = userInfo;
         return Ok(_keepsServ.Create(newKeep));
+      }
+      catch (Exception e)
+      {
+        return BadRequest(e.Message);
+      }
+    }
+
+    //REVIEW might need to add more checks here if i impliment edit keep data instead of just counts
+    [HttpPut("{id}")]
+    public ActionResult<Keep> Edit([FromBody] Keep updatedKeep, int id)
+    {
+      try
+      {
+        updatedKeep.Id = id;
+        return Ok(_keepsServ.Edit(updatedKeep));
       }
       catch (Exception e)
       {

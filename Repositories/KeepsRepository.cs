@@ -62,5 +62,20 @@ namespace Keepr.Repositories
       newKeep.Id = id;
       return newKeep;
     }
+
+    //FIXME need to return creator with mySQL request but cant figure out how sql docs are confusing
+    internal Keep Edit(Keep updatedKeep)
+    {
+      string sql = @"
+      UPDATE keeps
+      SET
+        views = @Views,
+        keeps = @Keeps,
+        shares = @Shares
+      WHERE id = @Id;
+      ";
+      _keepsDb.Execute(sql, updatedKeep);
+      return updatedKeep;
+    }
   }
 }
