@@ -19,17 +19,34 @@ namespace Keepr.Repositories
     internal IEnumerable<Keep> GetAll()
     {
       string sql = @"
-        SELECT * FROM keeps;
+        SELECT
+        keep.*,
+        prof.*
+        FROM keeps keep
+        JOIN profiles prof ON keep.creatorId = prof.id
         ";
-      return _keepsDb.Query<Keep>(sql);
+      return _keepsDb.Query<Keep, Profile, Keep>(sql, (keep, profile) =>
+      {
+        keep.Creator = profile;
+        return keep;
+      }, splitOn: "id");
     }
 
     internal Keep GetById(int id)
     {
       string sql = @"
-        SELECT * FROM keeps WHERE id = @id;
+        SELECT
+        keep.*,
+        prof.*
+        FROM keeps keep
+        JOIN profiles prof ON keep.creatorId = prof.id
+        WHERE keep.id = @id
         ";
-      return _keepsDb.Query<Keep>(sql, new { id }).FirstOrDefault();
+      return _keepsDb.Query<Keep, Profile, Keep>(sql, (keep, profile) =>
+      {
+        keep.Creator = profile;
+        return keep;
+      }, new { id }, splitOn: "id").FirstOrDefault();
     }
 
     internal Keep Create(Keep newKeep)
