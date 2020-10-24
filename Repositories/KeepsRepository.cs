@@ -70,6 +70,9 @@ namespace Keepr.Repositories
       string sql = @"
       UPDATE keeps
       SET
+        name = @Name,
+        description = @Description,
+        img = @Img,
         views = @Views,
         keeps = @Keeps,
         shares = @Shares
