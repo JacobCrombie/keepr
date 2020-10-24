@@ -26,10 +26,24 @@ namespace Keepr.Repositories
 
     internal Keep GetById(int id)
     {
-        string sql = @"
+      string sql = @"
         SELECT * FROM keeps WHERE id = @id;
         ";
-        return _keepsDb.Query<Keep>(sql, new {id}).FirstOrDefault();
+      return _keepsDb.Query<Keep>(sql, new { id }).FirstOrDefault();
+    }
+
+    internal Keep Create(Keep newKeep)
+    {
+      string sql = @"
+      INSERT INTO keeps
+      (creatorId, name, description, img, keeps, views, shares)
+      VALUES
+      (@CreatorId, @Name, @Description, @Img, @Keeps, @Views, @Shares);
+      SELECT LAST_INSERT_ID();
+      ";
+      int id = _keepsDb.ExecuteScalar<int>(sql, newKeep);
+      newKeep.Id = id;
+      return newKeep;
     }
   }
 }

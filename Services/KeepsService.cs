@@ -7,7 +7,7 @@ namespace Keepr.Services
 {
   public class KeepsService
   {
-      private readonly KeepsRepository _keepsRepo;
+    private readonly KeepsRepository _keepsRepo;
 
     public KeepsService(KeepsRepository keepsRepo)
     {
@@ -21,12 +21,17 @@ namespace Keepr.Services
 
     internal Keep GetById(int id)
     {
-        Keep data = _keepsRepo.GetById(id);
-        if(data == null)
-        {
-            throw new Exception("Invalid Id");
-        }
-        return data;
+      Keep data = _keepsRepo.GetById(id);
+      if (data == null)
+      {
+        throw new Exception("Invalid Id");
+      }
+      return data;
+    }
+
+    internal Keep Create(Keep newKeep)
+    {
+      return _keepsRepo.Create(newKeep);
     }
   }
 }

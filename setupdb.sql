@@ -20,3 +20,5 @@
 --   shares INT,
 --   PRIMARY KEY (id)
 -- );
+
+-- SELECT * FROM profiles;
