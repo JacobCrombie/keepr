@@ -37,10 +37,8 @@ namespace Keepr.Services
     internal Keep Edit(Keep updatedKeep)
     {
       Keep data = GetById(updatedKeep.Id);
-      updatedKeep.CreatorId = data.CreatorId;
       updatedKeep.Description = updatedKeep.Description != null ? updatedKeep.Description : data.Description;
       updatedKeep.Name = updatedKeep.Name != null ? updatedKeep.Name : data.Name;
-      updatedKeep.Id = data.Id;
       updatedKeep.Img = updatedKeep.Img != null ? updatedKeep.Img : data.Img;
       updatedKeep.Keeps = updatedKeep.Keeps != 0 ? updatedKeep.Keeps : data.Keeps;
       updatedKeep.Views = updatedKeep.Views != 0 ? updatedKeep.Views : data.Views;
