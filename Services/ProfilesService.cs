@@ -1,3 +1,4 @@
+using System;
 using Keepr.Models;
 using Keepr.Repositories;
 
@@ -16,6 +17,16 @@ namespace Keepr.Services
       if (profile == null)
       {
         return _repo.Create(userInfo);
+      }
+      return profile;
+    }
+
+    internal Profile GetProfileById(string id)
+    {
+      Profile profile = _repo.GetById(id);
+      if (profile == null)
+      {
+        throw new Exception("Invalid Profile Id");
       }
       return profile;
     }

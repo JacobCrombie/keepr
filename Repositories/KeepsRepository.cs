@@ -63,6 +63,23 @@ namespace Keepr.Repositories
       return newKeep;
     }
 
+    internal IEnumerable<Keep> GetKeepsByProfile(string profileId)
+    {
+      string sql = @"
+        SELECT
+        keep.*,
+        prof.*
+        FROM keeps keep
+        JOIN profiles prof ON keep.creatorId = prof.id
+        WHERE keep.creatorId = @profileId;
+      ";
+      return _keepsDb.Query<Keep, Profile, Keep>(sql, (keep, profile) =>
+      {
+        keep.Creator = profile;
+        return keep;
+      }, new { profileId }, splitOn: "id");
+    }
+
 
     //FIXME need to return creator with mySQL request but cant figure out how sql docs are confusing
     internal Keep Edit(Keep updatedKeep)

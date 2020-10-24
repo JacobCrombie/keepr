@@ -22,3 +22,12 @@
 -- );
 
 -- SELECT * FROM profiles;
+/* 
+        SELECT
+        keep.*,
+        prof.*
+        FROM keeps keep
+        JOIN profiles prof ON keep.creatorId = prof.id
+        WHERE keep.creatorId = "296fe478-a97e-4279-8b2f-7af5d6c976a6"; */
+/* 
+        SELECT * FROM keeps */

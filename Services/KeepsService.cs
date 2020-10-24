@@ -46,6 +46,11 @@ namespace Keepr.Services
       return _keepsRepo.Edit(updatedKeep);
     }
 
+    internal IEnumerable<Keep> GetKeepsByProfile(string profId)
+    {
+      return _keepsRepo.GetKeepsByProfile(profId);
+    }
+
     internal string Delete(int id, string userId)
     {
       Keep data = GetById(id);
