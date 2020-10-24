@@ -19,7 +19,9 @@ export default new Vuex.Store({
     //#endregion
 
     //#region Keeps
-
+    setKeeps(state, keeps) {
+      state.keeps = keeps
+    }
 
     //#endregion
 
@@ -46,7 +48,10 @@ export default new Vuex.Store({
     //#endregion
 
     //#region Keeps
-
+    async getAllKeeps({ commit, dispatch }) {
+      let res = await api.get("keeps")
+      commit("setKeeps", res.data)
+    }
 
     //#endregion
 
