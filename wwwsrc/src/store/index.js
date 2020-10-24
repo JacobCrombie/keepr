@@ -51,6 +51,14 @@ export default new Vuex.Store({
     async getAllKeeps({ commit, dispatch }) {
       let res = await api.get("keeps")
       commit("setKeeps", res.data)
+    },
+    async deleteKeep({ commit, dispatch }, keepId) {
+      await api.delete("keeps/" + keepId)
+      dispatch("getAllKeeps")
+    },
+    async createKeep({ commit, dispatch }, keepData) {
+      await api.post("keeps", keepData)
+      dispatch("getAllKeeps")
     }
 
     //#endregion
