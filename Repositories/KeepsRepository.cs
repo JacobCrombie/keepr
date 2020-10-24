@@ -63,6 +63,7 @@ namespace Keepr.Repositories
       return newKeep;
     }
 
+
     //FIXME need to return creator with mySQL request but cant figure out how sql docs are confusing
     internal Keep Edit(Keep updatedKeep)
     {
@@ -76,6 +77,11 @@ namespace Keepr.Repositories
       ";
       _keepsDb.Execute(sql, updatedKeep);
       return updatedKeep;
+    }
+    internal void Delete(int id)
+    {
+      string sql = "DELETE FROM keeps WHERE id = @id";
+      _keepsDb.Execute(sql, new { id });
     }
   }
 }

@@ -47,5 +47,16 @@ namespace Keepr.Services
       updatedKeep.Shares = updatedKeep.Shares != 0 ? updatedKeep.Shares : data.Shares;
       return _keepsRepo.Edit(updatedKeep);
     }
+
+    internal string Delete(int id, string userId)
+    {
+      Keep data = GetById(id);
+      if (data.CreatorId != userId)
+      {
+        throw new Exception("Invalid Edit Permissions, This keep isn't yours to delete");
+      }
+      _keepsRepo.Delete(id);
+      return "Keep Removed";
+    }
   }
 }
