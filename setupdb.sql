@@ -43,3 +43,18 @@
 -- );
 
 -- TRUNCATE TABLE vaults;
+
+-- CREATE TABLE vaultkeeps
+-- (
+--   id INT NOT NULL AUTO_INCREMENT,
+--   keepId INT,
+--   vaultId INT,
+--   PRIMARY KEY (id),
+
+--   FOREIGN KEY (keepId)
+--     REFERENCES keeps (id)
+--     ON DELETE CASCADE,
+--   FOREIGN KEY (vaultId)
+--     REFERENCES vaults (id)
+--     ON DELETE CASCADE
+-- );
