@@ -18,6 +18,10 @@ namespace Keepr.Services
     {
       return _vaultsRepo.GetAll();
     }
+    internal IEnumerable<Vault> GetVaultsByProfile(string profid)
+    {
+        return _vaultsRepo.GetVaultsByProfile(profid);
+    }
 
     internal Vault GetById(int id)
     {
@@ -56,5 +60,6 @@ namespace Keepr.Services
          _vaultsRepo.Delete(id);
          return "Vault Removed;";
     }
+
   }
 }

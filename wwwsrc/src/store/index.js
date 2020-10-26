@@ -1,13 +1,14 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import { api } from "../services/AxiosService.js";
-import sa from "../store/SweetAlerts.js";
+import sa from "../services/SweetAlerts.js";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     profile: {},
+    queryUserKeeps: [],
     keeps: [],
     activeKeep: {},
     vaults: []
@@ -26,6 +27,9 @@ export default new Vuex.Store({
     },
     setActiveKeep(state, activeKeep) {
       state.activeKeep = activeKeep
+    },
+    setQueryUserKeeps(state, queryKeeps){
+      state.queryUserKeeps = queryKeeps
     }
 
     //#endregion
@@ -68,7 +72,14 @@ export default new Vuex.Store({
     activeKeep({ commit, dispatch }, activeKeep) {
       commit("setActiveKeep", activeKeep)
       sa.viewActiveKeep(activeKeep.name, activeKeep.description, activeKeep.img)
-
+    },
+    async getKeepsByProfile({commit,dispatch}, profId){
+      try {
+        let res = await api.get("profiles/"+profId+"/keeps")
+        commit("setQueryUserKeeps", res.data)
+      } catch (error) {
+        console.error(error);
+      }
     }
 
     //#endregion

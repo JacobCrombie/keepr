@@ -13,7 +13,6 @@
 
 
 <script>
-import sa from "../store/SweetAlerts.js";
 export default {
   name: "keep-component",
   props: ["keepProp"],
@@ -32,11 +31,11 @@ export default {
     setActiveKeep() {
       // this.$store.dispatch("activeKeep", this.keepProp);
       // console.log(this.activeKeep);
-      sa.viewActiveKeep(
-        this.keepProp.name,
-        this.keepProp.description,
-        this.keepProp.img
-      );
+      // sa.viewActiveKeep(
+      //   this.keepProp.name,
+      //   this.keepProp.description,
+      //   this.keepProp.img
+      // );
     },
   },
   components: {},
