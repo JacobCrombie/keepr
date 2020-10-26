@@ -11,7 +11,8 @@ export default new Vuex.Store({
     queryUserKeeps: [],
     keeps: [],
     activeKeep: {},
-    vaults: []
+    vaults: [],
+    queryUserVaults: []
   },
   mutations: {
 
@@ -30,12 +31,14 @@ export default new Vuex.Store({
     },
     setQueryUserKeeps(state, queryKeeps){
       state.queryUserKeeps = queryKeeps
-    }
+    },
 
     //#endregion
 
     //#region Vaults
-
+    setQueryUserVaults(state, queryVaults){
+      state.queryUserVaults= queryVaults
+    }
 
     //#endregion
 
@@ -65,9 +68,9 @@ export default new Vuex.Store({
       await api.delete("keeps/" + keepId)
       dispatch("getAllKeeps")
     },
-    async createKeep({ commit, dispatch }, keepData) {
+    async createKeep({ commit, dispatch }, keepData, profId) {
       await api.post("keeps", keepData)
-      dispatch("getAllKeeps")
+      dispatch("getKeepsByProfile", profId)
     },
     activeKeep({ commit, dispatch }, activeKeep) {
       commit("setActiveKeep", activeKeep)
@@ -80,12 +83,19 @@ export default new Vuex.Store({
       } catch (error) {
         console.error(error);
       }
-    }
+    },
 
     //#endregion
 
     //#region Vaults
-
+    async getVaultsByProfile({commit,dispatch}, profId){
+      try {
+        let res = await api.get("profiles/"+profId+"/vaults")
+        commit("setQueryUserVaults", res.data)
+      } catch (error) {
+        console.error(error);
+      }
+    },
 
     //#endregion
 

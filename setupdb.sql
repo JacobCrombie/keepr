@@ -41,3 +41,5 @@
 --   isprivate TINYINT,
 --   PRIMARY KEY (id)
 -- );
+
+-- TRUNCATE TABLE vaults;
