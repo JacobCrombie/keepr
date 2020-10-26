@@ -1,6 +1,6 @@
 <template>
   <div class="keep-component col-3 my-2">
-    <div class="card">
+    <div class="card" @click="setActiveKeep">
       <img class="card-img-top" :src="keepProp.img" />
       <div class="card-body">
         <i class="fa fa-times text-danger" @click="deleteKeep"></i>
@@ -13,16 +13,30 @@
 
 
 <script>
+import sa from "../store/SweetAlerts.js";
 export default {
   name: "keep-component",
   props: ["keepProp"],
   data() {
     return {};
   },
-  computed: {},
+  computed: {
+    activeKeep() {
+      return this.$store.state.activeKeep;
+    },
+  },
   methods: {
     deleteKeep() {
       this.$store.dispatch("deleteKeep", this.keepProp.id);
+    },
+    setActiveKeep() {
+      // this.$store.dispatch("activeKeep", this.keepProp);
+      // console.log(this.activeKeep);
+      sa.viewActiveKeep(
+        this.keepProp.name,
+        this.keepProp.description,
+        this.keepProp.img
+      );
     },
   },
   components: {},

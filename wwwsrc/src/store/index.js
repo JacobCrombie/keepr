@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import { api } from "../services/AxiosService.js";
+import sa from "../store/SweetAlerts.js";
 
 Vue.use(Vuex);
 
@@ -8,6 +9,7 @@ export default new Vuex.Store({
   state: {
     profile: {},
     keeps: [],
+    activeKeep: {},
     vaults: []
   },
   mutations: {
@@ -21,6 +23,9 @@ export default new Vuex.Store({
     //#region Keeps
     setKeeps(state, keeps) {
       state.keeps = keeps
+    },
+    setActiveKeep(state, activeKeep) {
+      state.activeKeep = activeKeep
     }
 
     //#endregion
@@ -59,6 +64,11 @@ export default new Vuex.Store({
     async createKeep({ commit, dispatch }, keepData) {
       await api.post("keeps", keepData)
       dispatch("getAllKeeps")
+    },
+    activeKeep({ commit, dispatch }, activeKeep) {
+      commit("setActiveKeep", activeKeep)
+      sa.viewActiveKeep(activeKeep.name, activeKeep.description, activeKeep.img)
+
     }
 
     //#endregion
