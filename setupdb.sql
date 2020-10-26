@@ -31,3 +31,13 @@
         WHERE keep.creatorId = "296fe478-a97e-4279-8b2f-7af5d6c976a6"; */
 /* 
         SELECT * FROM keeps */
+
+-- CREATE TABLE vaults
+-- (
+--   id INT NOT NULL AUTO_INCREMENT,
+--   creatorId VARCHAR(255) NOT NULL,
+--   name VARCHAR(255) NOT NULL,
+--   description VARCHAR(255),
+--   isprivate TINYINT,
+--   PRIMARY KEY (id)
+-- );
