@@ -46,6 +46,11 @@ namespace Keepr.Services
       return _keepsRepo.Edit(updatedKeep);
     }
 
+    internal IEnumerable<VaultKeepViewModel> GetKeepsByVaultId(int id)
+    {
+      return _keepsRepo.GetKeepsByVaultId(id);
+    }
+
     internal IEnumerable<Keep> GetKeepsByProfile(string profId)
     {
       return _keepsRepo.GetKeepsByProfile(profId);

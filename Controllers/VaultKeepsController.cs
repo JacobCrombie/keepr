@@ -13,7 +13,6 @@ namespace Keepr.Controllers
     {
       _vaultKeepServ = vaultKeepServ;
     }
-    [HttpGet]
 
   }
 }
