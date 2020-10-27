@@ -11,6 +11,7 @@ export default new Vuex.Store({
     keeps: [],
     activeKeep: {},
     vaults: [],
+    myVaults: []
   },
   mutations: {
 
@@ -33,6 +34,9 @@ export default new Vuex.Store({
     //#region Vaults
     setVaults(state, queryVaults) {
       state.vaults = queryVaults
+    },
+    setMyVaults(state, vaults){
+      state.myVaults = vaults
     }
 
     //#endregion
@@ -43,10 +47,11 @@ export default new Vuex.Store({
 
     //#region Profile
 
-    async getProfile({ commit }) {
+    async getProfile({ commit, dispatch }) {
       try {
         let res = await api.get("profiles");
         commit("setProfile", res.data);
+        dispatch("getMyVaults", res.data.id)
       } catch (error) {
         console.error(error);
       }
@@ -106,6 +111,14 @@ export default new Vuex.Store({
         console.error(error);
       }
     },
+    async getMyVaults({commit,dispatch}, profId){
+      try {
+        let res = await api.get("profiles/" + profId+"/vaults")
+        commit("setMyVaults", res.data)
+      } catch (error) {
+        console.error(error);
+      }
+    }
 
     //#endregion
 
