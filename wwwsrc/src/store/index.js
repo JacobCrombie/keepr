@@ -70,7 +70,6 @@ export default new Vuex.Store({
     },
     activeKeep({ commit, dispatch }, activeKeep) {
       commit("setActiveKeep", activeKeep)
-      sa.viewActiveKeep(activeKeep.name, activeKeep.description, activeKeep.img)
     },
     async getKeepsByProfile({ commit, dispatch }, profId) {
       try {

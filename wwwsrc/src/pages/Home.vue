@@ -3,8 +3,7 @@
     <div class="row">
       <h1 class="text-center col">Welcome to Keepr</h1>
     </div>
-
-    <div class="row justify-content-around">
+    <div class="row justify-content-around card-columns">
       <keep-component v-for="keep in keeps" :key="keep.id" :keepProp="keep" />
     </div>
   </div>
@@ -12,7 +11,7 @@
 
 
 <script>
-import keepComponent from "../components/KeepComponent";
+import keepComponent from "../components/KeepComponent"
 export default {
   name: "home-page",
   mounted() {
@@ -26,9 +25,7 @@ export default {
       return this.$store.state.keeps;
     },
   },
-  methods: {
-    toggleModal() {},
-  },
+  methods: {  },
   components: { keepComponent },
 };
 </script>
