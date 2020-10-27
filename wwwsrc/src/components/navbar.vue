@@ -2,7 +2,7 @@
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <router-link class="navbar-brand d-flex" :to="{ name: 'Home' }">
       <div class="d-flex flex-column align-items-center">
-        <h1 class="border border-primary">K</h1>
+        <h1 class="border border-primary">kEEpr</h1>
       </div>
     </router-link>
     <button
@@ -28,7 +28,9 @@
           v-if="$auth.isAuthenticated"
           :class="{ active: $route.name == 'Profile' }"
         >
-          <router-link class="nav-link" :to="{ name: 'Profile', params: {id: activeProfile.id} }"
+          <router-link
+            class="nav-link"
+            :to="{ name: 'Profile', params: { id: myProfile.id } }"
             >Profile</router-link
           >
         </li>
@@ -53,9 +55,9 @@ import { setBearer, resetBearer } from "../services/AxiosService";
 export default {
   name: "Navbar",
   computed: {
-    activeProfile(){
-      return this.$store.state.profile
-    }
+    myProfile() {
+      return this.$store.state.profile;
+    },
   },
   methods: {
     async login() {

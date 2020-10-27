@@ -4,8 +4,6 @@
       <h1 class="text-center col">Welcome to Keepr</h1>
     </div>
 
-
-
     <div class="row justify-content-around">
       <keep-component v-for="keep in keeps" :key="keep.id" :keepProp="keep" />
     </div>
@@ -21,9 +19,7 @@ export default {
     this.$store.dispatch("getAllKeeps");
   },
   data() {
-    return {
-
-    };
+    return {};
   },
   computed: {
     keeps() {
@@ -31,7 +27,6 @@ export default {
     },
   },
   methods: {
-
     toggleModal() {},
   },
   components: { keepComponent },

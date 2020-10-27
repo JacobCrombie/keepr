@@ -37,6 +37,13 @@ export default {
       //   this.keepProp.img
       // );
     },
+    addKeep() {
+      let addKeepData = {
+        keepId: this.keepProp.id,
+        vaultId: 1,
+      };
+      this.$store.dispatch("addKeepToVault", addKeepData);
+    },
   },
   components: {},
 };

@@ -8,11 +8,9 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     profile: {},
-    queryUserKeeps: [],
     keeps: [],
     activeKeep: {},
     vaults: [],
-    queryUserVaults: []
   },
   mutations: {
 
@@ -29,15 +27,12 @@ export default new Vuex.Store({
     setActiveKeep(state, activeKeep) {
       state.activeKeep = activeKeep
     },
-    setQueryUserKeeps(state, queryKeeps){
-      state.queryUserKeeps = queryKeeps
-    },
 
     //#endregion
 
     //#region Vaults
-    setQueryUserVaults(state, queryVaults){
-      state.queryUserVaults= queryVaults
+    setVaults(state, queryVaults) {
+      state.vaults = queryVaults
     }
 
     //#endregion
@@ -68,18 +63,34 @@ export default new Vuex.Store({
       await api.delete("keeps/" + keepId)
       dispatch("getAllKeeps")
     },
-    async createKeep({ commit, dispatch }, keepData, profId) {
+    async createKeep({ commit, dispatch, state }, keepData) {
+      debugger
       await api.post("keeps", keepData)
-      dispatch("getKeepsByProfile", profId)
+      dispatch("getKeepsByProfile", keepData.creatorId)
     },
     activeKeep({ commit, dispatch }, activeKeep) {
       commit("setActiveKeep", activeKeep)
       sa.viewActiveKeep(activeKeep.name, activeKeep.description, activeKeep.img)
     },
-    async getKeepsByProfile({commit,dispatch}, profId){
+    async getKeepsByProfile({ commit, dispatch }, profId) {
       try {
-        let res = await api.get("profiles/"+profId+"/keeps")
-        commit("setQueryUserKeeps", res.data)
+        let res = await api.get("profiles/" + profId + "/keeps")
+        commit("setKeeps", res.data)
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async getKeepsByVaultId({ commit, dispatch }, vaultId) {
+      try {
+        let res = await api.get("vaults/" + vaultId + "/keeps")
+        commit("setKeeps")
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async addKeepToVault({ commit, dispatch }, keepId) {
+      try {
+        await api.post("vaultkeeps/")
       } catch (error) {
         console.error(error);
       }
@@ -88,10 +99,10 @@ export default new Vuex.Store({
     //#endregion
 
     //#region Vaults
-    async getVaultsByProfile({commit,dispatch}, profId){
+    async getVaultsByProfile({ commit, dispatch }, profId) {
       try {
-        let res = await api.get("profiles/"+profId+"/vaults")
-        commit("setQueryUserVaults", res.data)
+        let res = await api.get("profiles/" + profId + "/vaults")
+        commit("setVaults", res.data)
       } catch (error) {
         console.error(error);
       }

@@ -6,11 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Keepr.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class VaultKeepsController : ControllerBase
-    {
-        private readonly VaultKeepsService _vaultKeepServ;
+  [ApiController]
+  [Route("api/[controller]")]
+  public class VaultKeepsController : ControllerBase
+  {
+    private readonly VaultKeepsService _vaultKeepServ;
 
     public VaultKeepsController(VaultKeepsService vaultKeepServ)
     {
@@ -22,18 +22,19 @@ namespace Keepr.Controllers
     {
       try
       {
-          return Ok(_vaultKeepServ.Create(newVaultKeep));
+        return Ok(_vaultKeepServ.Create(newVaultKeep));
       }
       catch (Exception e)
       {
         return BadRequest(e.Message);
       }
     }
-  [HttpDelete("{id}")]
-    public ActionResult<VaultKeep> Delete(int id){
+    [HttpDelete("{id}")]
+    public ActionResult<VaultKeep> Delete(int id)
+    {
       try
       {
-          return Ok(_vaultKeepServ.Delete(id));
+        return Ok(_vaultKeepServ.Delete(id));
       }
       catch (Exception e)
       {

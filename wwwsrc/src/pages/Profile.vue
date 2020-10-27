@@ -1,6 +1,5 @@
 <template>
   <div class="profile-page container-fluid">
-
     <div class="row">
       <form class="col" @submit.prevent="createKeep">
         <div class="form-group-inline">
@@ -63,15 +62,21 @@ export default {
   },
   computed: {
     keeps() {
-      return this.$store.state.queryUserKeeps;
+      return this.$store.state.keeps;
     },
     vaults() {
-      return this.$store.state.queryUserVaults;
+      return this.$store.state.vaults;
     },
   },
   methods: {
     createKeep() {
-      this.$store.dispatch("createKeep", this.keepData ,this.$route.params.id);
+      let keepData = {
+        creatorId: this.$route.params.id,
+        description: this.keepData.description,
+        name: this.keepData.name,
+        img: this.keepData.img,
+      };
+      this.$store.dispatch("createKeep", keepData);
       this.keepData = {};
     },
   },

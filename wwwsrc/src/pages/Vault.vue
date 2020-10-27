@@ -6,10 +6,17 @@
 <script>
 export default {
   name: "vault-page",
+  mounted() {
+    this.$store.dispatch("getKeepsByVaultId", this.$route.params.id);
+  },
   data() {
     return {};
   },
-  computed: {},
+  computed: {
+    vaultKeeps() {
+      return this.$store.state.keeps;
+    },
+  },
   methods: {},
   components: {},
 };
