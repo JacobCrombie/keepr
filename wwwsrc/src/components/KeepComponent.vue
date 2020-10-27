@@ -6,6 +6,7 @@
         <i class="fa fa-times text-danger" @click="deleteKeep"></i>
         <h4 class="card-title">{{ keepProp.name }}</h4>
         <p class="card-text">{{ keepProp.description }}</p>
+        <i class="fa fa-plus text-info" @click="addKeep"></i>
       </div>
     </div>
   </div>

@@ -1,9 +1,15 @@
 <template>
-  <div class="vault-page"></div>
+  <div class="vault-page">
+    <h1>Keeps</h1>
+    <div class="row justify-content-around">
+      <keep-component v-for="keep in keeps" :key="keep.id" :keepProp="keep" />
+    </div>
+  </div>
 </template>
 
 
 <script>
+import KeepComponent from "../components/KeepComponent";
 export default {
   name: "vault-page",
   mounted() {
@@ -13,12 +19,12 @@ export default {
     return {};
   },
   computed: {
-    vaultKeeps() {
+    keeps() {
       return this.$store.state.keeps;
     },
   },
   methods: {},
-  components: {},
+  components: { KeepComponent },
 };
 </script>
 
