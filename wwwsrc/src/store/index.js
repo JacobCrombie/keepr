@@ -90,7 +90,6 @@ export default new Vuex.Store({
     },
     async addKeepToVault({ commit, dispatch }, keepData) {
       try {
-        debugger
         await api.post("vaultkeeps", keepData)
       } catch (error) {
         console.error(error);

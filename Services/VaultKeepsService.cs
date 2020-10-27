@@ -15,7 +15,12 @@ namespace Keepr.Services
 
     internal VaultKeep Create(VaultKeep newVaultKeep)
     {
+        VaultKeep data = _vaultKeepRepo.FindByKeepId(newVaultKeep);
+        if (data == null)
+        {
         return _vaultKeepRepo.Create(newVaultKeep);
+        }
+        throw new Exception("Keep already in vault");
     }
 
     internal VaultKeep Delete(int id)

@@ -1,5 +1,6 @@
 using System;
 using System.Data;
+using System.Linq;
 using Dapper;
 using Keepr.Models;
 
@@ -26,6 +27,15 @@ namespace Keepr.Repositories
         int id =_vaultKeepDb.ExecuteScalar<int>(sql, newVaultKeep);
         newVaultKeep.Id = id;
         return newVaultKeep;
+    }
+    internal VaultKeep FindByKeepId(VaultKeep newVaultKeep)
+    {
+      string sql = @"
+      SELECT * FROM vaultkeeps
+       WHERE keepid = @KeepId
+       AND vaultid = @VaultId;
+      ";
+      return _vaultKeepDb.Query<VaultKeep>(sql, new{KeepId = newVaultKeep.KeepId, VaultId = newVaultKeep.VaultId}).FirstOrDefault();
     }
 
     internal void Delete(int id)
