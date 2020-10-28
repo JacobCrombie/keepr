@@ -10,6 +10,8 @@
           <p class="card-text" v-if="this.$route.params.id == searchedProfile.id">{{ searchedProfile.email }}</p>
           <p class="card-text" v-else>{{ profile.email }}</p>
         </div>
+        <p>Keeps:{{keeps.length}}</p>
+        <p>Vaults:{{vaults.length}}</p>
       </div>
     </div>
     <div class="row" v-if="profile.id == this.$route.params.id">

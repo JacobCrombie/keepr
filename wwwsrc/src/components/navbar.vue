@@ -31,6 +31,7 @@
           <router-link
             class="nav-link"
             :to="{ name: 'Profile', params: { id: myProfile.id } }"
+            @click="getKeepsByProfile"
             >Profile</router-link
           >
         </li>
@@ -71,6 +72,9 @@ export default {
       resetBearer();
       await this.$auth.logout({ returnTo: window.location.origin });
     },
+    getKeepsByProfile(){
+      this.$store.dispatch("getKeepsByProfile", this.$route.params.id)
+    }
   },
 };
 </script>

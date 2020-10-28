@@ -105,17 +105,19 @@ export default {
     },
     addKeep() {
       let addKeepData = {
-        keepId: this.keepProp.id,
+        keepId: this.activeKeep.id,
         vaultId: this.vaultSelect,
       };
       this.$store.dispatch("addKeepToVault", addKeepData);
-      let count = this.keepProp.keeps;
+      let count = this.activeKeep.keeps;
+      debugger
       count ++;
       let keepEdit = {
         keeps: count,
-        id: this.keepProp.id,
-        creatorId: this.keepProp.creator.id
+        id: this.activeKeep.id,
+        creatorId: this.activeKeep.creator.id
       }
+      this.$store.dispatch("editKeep", keepEdit)
       this.vaultSelect = "";
     },
     profilePush() {
