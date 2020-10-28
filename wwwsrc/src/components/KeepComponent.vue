@@ -14,13 +14,12 @@
       </div>
     </div>
 
-    <!-- Modal -->
     <div class="modal fade" id="keep-modal" tabindex="-1" role="dialog">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content card">
           <div class="modal-header">
-            <h5 class="modal-title">{{ keepProp.name }}</h5>
-            <h5>{{ keepProp.creator.name }}</h5>
+            <h5 class="modal-title">{{ activeKeep.name }}</h5>
+            <h5>{{ activeKeep.creator.name }}</h5>
             <button
               type="button"
               class="close"
@@ -31,14 +30,14 @@
             </button>
           </div>
           <div class="card-body d-flex flex-row">
-            <img class="card-img-left" :src="keepProp.img" alt="" />
+            <img class="card-img-left" :src="activeKeep.img" alt="" />
             <div class="modal-body">
               <h5>
-                {{ keepProp.description }}
+                {{ activeKeep.description }}
               </h5>
               <img
                 class="rounded-circle"
-                :src="keepProp.creator.picture"
+                :src="activeKeep.creator.picture"
                 alt=""
                 @click="profilePush"
                 data-dismiss="modal"
@@ -46,8 +45,8 @@
             </div>
           </div>
           <div class="modal-footer d-flex justify-content-between">
-            <p>Views:{{ keepProp.views }}</p>
-            <p>Kept:{{ keepProp.keeps }}</p>
+            <p>Views:{{ activeKeep.views }}</p>
+            <p>Kept:{{ activeKeep.keeps }}</p>
             <button
               type="button"
               class="btn btn-secondary"
@@ -110,13 +109,17 @@ export default {
         vaultId: this.vaultSelect,
       };
       this.$store.dispatch("addKeepToVault", addKeepData);
+      let count = this.keepProp.keeps;
+      count ++;
+      let keepEdit = {
+        keeps: count,
+        id: this.keepProp.id,
+        creatorId: this.keepProp.creator.id
+      }
       this.vaultSelect = "";
     },
     profilePush() {
-      router.push({
-        name: "Profile",
-        params: { id: this.keepProp.creator.id },
-      });
+      this.$store.dispatch("getProfileById", this.keepProp.creator.id)
     },
   },
   components: { router },

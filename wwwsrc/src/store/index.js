@@ -2,14 +2,18 @@ import Vue from "vue";
 import Vuex from "vuex";
 import { api } from "../services/AxiosService.js";
 import sa from "../services/SweetAlerts.js";
+import router from "../router/index.js"
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     profile: {},
+    searchedProfile: {},
     keeps: [],
-    activeKeep: {},
+    activeKeep: {
+      creator: {}
+    },
     vaults: [],
     myVaults: []
   },
@@ -18,6 +22,9 @@ export default new Vuex.Store({
     //#region Profile
     setProfile(state, profile) {
       state.profile = profile;
+    },
+    setSearchedProfile(state, profile){
+      state.searchedProfile = profile;
     },
     //#endregion
 
@@ -52,6 +59,18 @@ export default new Vuex.Store({
         let res = await api.get("profiles");
         commit("setProfile", res.data);
         dispatch("getMyVaults", res.data.id)
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async getProfileById({commit, dispatch}, profId){
+      try {
+        let res = await api.get("profiles/"+ profId)
+        commit("setSearchedProfile", res.data)
+        router.push({
+          name: "Profile",
+          params: { id: this.state.searchedProfile.id },
+        });
       } catch (error) {
         console.error(error);
       }
@@ -125,6 +144,14 @@ export default new Vuex.Store({
       try {
         let res = await api.get("profiles/" + profId + "/vaults")
         commit("setMyVaults", res.data)
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async createVault({ commit, dispatch }, vaultData) {
+      try {
+        await api.post("vaults", vaultData)
+        dispatch("getVaultsByProfile", vaultData.creatorId)
       } catch (error) {
         console.error(error);
       }

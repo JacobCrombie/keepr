@@ -2,17 +2,20 @@
   <div class="profile-page container-fluid">
     <div class="row">
       <div class="card">
-        <img class="card-img-right" :src="keepProp.creator.img" alt="" />
+        <img class="card-img-right" v-if="this.$route.params.id == searchedProfile.id" :src="searchedProfile.picture" alt="" />
+        <img class="card-img-right" v-if="this.$route.params.id == profile.id" :src="profile.picture" alt="" />
         <div class="card-body">
-          <h4 class="card-title">{{ keepProp.creator.name }}</h4>
-          <p class="card-text">{{ keepProp.creator.email }}</p>
+          <h4 class="card-title" v-if="this.$route.params.id == searchedProfile.id">{{ searchedProfile.name }}</h4>
+          <h4 class="card-title" v-if="this.$route.params.id == profile.id">{{ profile.name }}</h4>
+          <p class="card-text" v-if="this.$route.params.id == searchedProfile.id">{{ searchedProfile.email }}</p>
+          <p class="card-text" v-if="this.$route.params.id == profile.id">{{ profile.email }}</p>
         </div>
       </div>
     </div>
-    <div class="row">
+    <div class="row" v-if="profile.id == this.$route.params.id">
+          <h4>Add A Keep</h4>
       <form class="col" @submit.prevent="createKeep">
-        <div class="form-group-inline">
-          <h4 class="text-center">Add A Keep</h4>
+        <div class="form-group form-inline">
           <input
             type="text"
             class="form-control"
@@ -31,10 +34,25 @@
             placeholder="Image Url..."
             v-model="keepData.img"
           />
-        </div>
         <button class="btn btn-info" type="submit" data-dismiss="modal">
           Add Keep
         </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="row" v-if="profile.id == this.$route.params.id">
+    <h4>Add A Vault</h4>
+      <form @submit.prevent="createVault">
+        <div class="form-group form-inline">
+          <input type="text"
+            class="form-control" placeholder="Name..." v-model="vaultData.name">
+          <input type="text"
+            class="form-control" placeholder="Description" v-model="vaultData.description">
+            <label for="isPrivate">Private</label>
+            <input type="checkbox" v-model="vaultData.isPrivate">
+            <button type="submit" class="btn btn-primary">Add Vault</button>
+        </div>
       </form>
     </div>
 
@@ -64,10 +82,12 @@ export default {
   mounted() {
     this.$store.dispatch("getKeepsByProfile", this.$route.params.id);
     this.$store.dispatch("getVaultsByProfile", this.$route.params.id);
+    this.$store.dispatch("getProfileById", this.$route.params.id)
   },
   data() {
     return {
       keepData: {},
+      vaultData: {}
     };
   },
   computed: {
@@ -75,11 +95,18 @@ export default {
       return this.$store.state.keeps;
     },
     vaults() {
-      return this.$store.state.vaults;
+      if (this.profile.id == this.$route.params.id) {
+        return this.$store.state.myVaults;
+      }
+      let publicVaults = this.$store.state.vaults.filter(v => v.isPrivate != true)
+      return publicVaults
     },
     profile() {
       return this.$store.state.profile;
     },
+    searchedProfile(){
+      return this.$store.state.searchedProfile
+    }
   },
   methods: {
     createKeep() {
@@ -92,6 +119,16 @@ export default {
       this.$store.dispatch("createKeep", keepData);
       this.keepData = {};
     },
+    createVault(){
+      let vaultData ={
+        creatorId: this.$route.params.id,
+        description: this.vaultData.description,
+        name: this.vaultData.description,
+        isPrivate: this.vaultData.isPrivate
+      }
+      this.$store.dispatch("createVault", vaultData)
+      this.vaultData = {};
+    }
   },
   components: { KeepComponent, VaultComponent },
 };

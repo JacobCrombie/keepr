@@ -65,5 +65,17 @@ namespace Keepr.Controllers
         return BadRequest(e.Message);
       }
     }
+    [HttpGet("{id}")]
+    public ActionResult<Profile> GetProfileById(string id)
+    {
+      try
+      {
+          return Ok(_ps.GetProfileById(id));
+      }
+      catch (Exception e)
+      {
+        return BadRequest(e.Message);
+      }
+    }
   }
 }
