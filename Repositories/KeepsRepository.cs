@@ -66,8 +66,9 @@ namespace Keepr.Repositories
     internal IEnumerable<VaultKeepViewModel> GetKeepsByVaultId(int id)
     {
       string sql = @"
-      SELECT keep.*, prof.*,
-      vaultkeep.id AS VaultKeepId
+      SELECT keep.*,
+      vaultkeep.id AS VaultKeepId,
+      prof.*
       FROM vaultkeeps vaultkeep
       JOIN keeps keep ON keep.id = vaultkeep.keepId
       JOIN profiles prof ON prof.id = keep.creatorId
