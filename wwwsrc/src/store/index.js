@@ -35,7 +35,7 @@ export default new Vuex.Store({
     setVaults(state, queryVaults) {
       state.vaults = queryVaults
     },
-    setMyVaults(state, vaults){
+    setMyVaults(state, vaults) {
       state.myVaults = vaults
     }
 
@@ -68,8 +68,7 @@ export default new Vuex.Store({
       await api.delete("keeps/" + keepId)
       dispatch("getAllKeeps")
     },
-    async createKeep({ commit, dispatch, state }, keepData) {
-      debugger
+    async createKeep({ commit, dispatch }, keepData) {
       await api.post("keeps", keepData)
       dispatch("getKeepsByProfile", keepData.creatorId)
     },
@@ -99,6 +98,17 @@ export default new Vuex.Store({
         console.error(error);
       }
     },
+    async editKeep({ commit, dispatch }, keepEdit) {
+      try {
+        await api.put("keeps/" + keepEdit.id, keepEdit)
+        if (keepEdit.creatorId == this.state.profile.id) {
+          dispatch("getKeepsByProfile", keepEdit.creatorId)
+        }
+        dispatch("getAllKeeps")
+      } catch (error) {
+        console.error(error);
+      }
+    },
 
     //#endregion
 
@@ -111,9 +121,9 @@ export default new Vuex.Store({
         console.error(error);
       }
     },
-    async getMyVaults({commit,dispatch}, profId){
+    async getMyVaults({ commit, dispatch }, profId) {
       try {
-        let res = await api.get("profiles/" + profId+"/vaults")
+        let res = await api.get("profiles/" + profId + "/vaults")
         commit("setMyVaults", res.data)
       } catch (error) {
         console.error(error);

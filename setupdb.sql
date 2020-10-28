@@ -8,18 +8,18 @@
 -- );
 
 
--- CREATE TABLE keeps
--- (
---   id INT NOT NULL AUTO_INCREMENT,
---   creatorId VARCHAR(255) NOT NULL,
---   name VARCHAR(255) NOT NULL,
---   description VARCHAR(255),
---   img VARCHAR(255) NOT NULL,
---   views INT NOT NULL,
---   keeps INT NOT NULL,
---   shares INT,
---   PRIMARY KEY (id)
--- );
+ /* CREATE TABLE keeps
+ (
+   id INT NOT NULL AUTO_INCREMENT,
+   creatorId VARCHAR(255) NOT NULL,
+   name VARCHAR(255) NOT NULL,
+   description VARCHAR(255),
+   img VARCHAR(255) NOT NULL,
+   views INT NOT NULL,
+   keeps INT NOT NULL,
+   shares INT,
+   PRIMARY KEY (id)
+ ); */
 
 -- SELECT * FROM profiles;
 /* 
@@ -32,29 +32,31 @@
 /* 
         SELECT * FROM keeps */
 
--- CREATE TABLE vaults
--- (
---   id INT NOT NULL AUTO_INCREMENT,
---   creatorId VARCHAR(255) NOT NULL,
---   name VARCHAR(255) NOT NULL,
---   description VARCHAR(255),
---   isprivate TINYINT,
---   PRIMARY KEY (id)
--- );
+ /* CREATE TABLE vaults
+ (
+   id INT NOT NULL AUTO_INCREMENT,
+   creatorId VARCHAR(255) NOT NULL,
+   name VARCHAR(255) NOT NULL,
+   description VARCHAR(255),
+   isprivate TINYINT,
+   PRIMARY KEY (id)
+ ); */
 
--- TRUNCATE TABLE vaults;
+/* TRUNCATE TABLE keeps; */
 
--- CREATE TABLE vaultkeeps
--- (
---   id INT NOT NULL AUTO_INCREMENT,
---   keepId INT,
---   vaultId INT,
---   PRIMARY KEY (id),
+ /* CREATE TABLE vaultkeeps
+ (
+   id INT NOT NULL AUTO_INCREMENT,
+   keepId INT,
+   vaultId INT,
+   PRIMARY KEY (id),
 
---   FOREIGN KEY (keepId)
---     REFERENCES keeps (id)
---     ON DELETE CASCADE,
---   FOREIGN KEY (vaultId)
---     REFERENCES vaults (id)
---     ON DELETE CASCADE
--- );
+   FOREIGN KEY (keepId)
+     REFERENCES keeps (id)
+     ON DELETE CASCADE,
+   FOREIGN KEY (vaultId)
+     REFERENCES vaults (id)
+     ON DELETE CASCADE
+ ); */
+
+/* DROP TABLE vaults; */

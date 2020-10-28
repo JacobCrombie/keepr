@@ -1,89 +1,131 @@
 <template>
   <div class="keep-component col-3 my-2">
-    <div class="card" data-toggle="modal" data-target="#keep-modal" @click="setActiveKeep">
-      <img class="card-img-top" :src="keepProp.img" />
+    <div class="card">
+      <img
+        class="card-img-top"
+        :src="keepProp.img"
+        data-toggle="modal"
+        data-target="#keep-modal"
+        @click="setActiveKeep"
+      />
       <div class="card-body">
-        <i class="fa fa-times text-danger"></i>
         <h4 class="card-title">{{ keepProp.name }}</h4>
-        <p class="card-text">{{ keepProp.description }}</p>
-        <i class="fa fa-plus text-info" @click="addKeep"></i>
+        <img class="rounded-circle" :src="keepProp.creator.picture" alt="" />
       </div>
     </div>
 
-<!-- Modal -->
-<div class="modal fade" id="keep-modal" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content card">
-      <div class="modal-header">
-        <h5 class="modal-title" >{{keepProp.name}}</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="card-body d-flex flex-row">
-      <img class="card-img-left" :src="keepProp.img" alt="">
-      <div class="modal-body">
-        <h5>
-        {{keepProp.description}}
-        </h5>
-      </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" @click="addKeep">Save changes</button>
-        <div class="form-group">
-          <label for=""></label>
-          <select class="form-control" v-model="vaultSelect">
-            <option v-for="v in myVaults" :key="v.id" :value="v.id">{{v.name}}</option>
-          </select>
+    <!-- Modal -->
+    <div class="modal fade" id="keep-modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content card">
+          <div class="modal-header">
+            <h5 class="modal-title">{{ keepProp.name }}</h5>
+            <h5>{{ keepProp.creator.name }}</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="card-body d-flex flex-row">
+            <img class="card-img-left" :src="keepProp.img" alt="" />
+            <div class="modal-body">
+              <h5>
+                {{ keepProp.description }}
+              </h5>
+              <img
+                class="rounded-circle"
+                :src="keepProp.creator.picture"
+                alt=""
+                @click="profilePush"
+                data-dismiss="modal"
+              />
+            </div>
+          </div>
+          <div class="modal-footer d-flex justify-content-between">
+            <p>Views:{{ keepProp.views }}</p>
+            <p>Kept:{{ keepProp.keeps }}</p>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary" @click="addKeep">
+              Save changes
+            </button>
+            <div class="form-group">
+              <label for=""></label>
+              <select class="form-control" v-model="vaultSelect">
+                <option v-for="v in myVaults" :key="v.id" :value="v.id">
+                  {{ v.name }}
+                </option>
+              </select>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
   </div>
 </template>
 
 
 <script>
+import router from "../router/index.js";
 export default {
   name: "keep-component",
   props: ["keepProp"],
   data() {
     return {
-      vaultSelect: ""
+      vaultSelect: "",
     };
   },
   computed: {
     activeKeep() {
       return this.$store.state.activeKeep;
     },
-    myVaults(){
-      return this.$store.state.myVaults
-    }
+    myVaults() {
+      return this.$store.state.myVaults;
+    },
   },
   methods: {
     setActiveKeep() {
+      let count = this.keepProp.views;
+      count++;
+      let keepEdit = {
+        views: count,
+        id: this.keepProp.id,
+        creatorId: this.keepProp.creator.id,
+      };
+      this.$store.dispatch("editKeep", keepEdit);
       this.$store.dispatch("activeKeep", this.keepProp);
     },
     addKeep() {
-      console.log(this.vaultSelect);
       let addKeepData = {
         keepId: this.keepProp.id,
         vaultId: this.vaultSelect,
       };
       this.$store.dispatch("addKeepToVault", addKeepData);
-      this.vaultSelect = ""
+      this.vaultSelect = "";
+    },
+    profilePush() {
+      router.push({
+        name: "Profile",
+        params: { id: this.keepProp.creator.id },
+      });
     },
   },
-  components: {},
+  components: { router },
 };
 </script>
 
 
 <style scoped>
-
-.modal-dialog{
+.modal-dialog {
   max-width: 50vw;
 }
 </style>

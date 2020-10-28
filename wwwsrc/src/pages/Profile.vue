@@ -1,6 +1,15 @@
 <template>
   <div class="profile-page container-fluid">
     <div class="row">
+      <div class="card">
+        <img class="card-img-right" :src="keepProp.creator.img" alt="" />
+        <div class="card-body">
+          <h4 class="card-title">{{ keepProp.creator.name }}</h4>
+          <p class="card-text">{{ keepProp.creator.email }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
       <form class="col" @submit.prevent="createKeep">
         <div class="form-group-inline">
           <h4 class="text-center">Add A Keep</h4>
@@ -51,6 +60,7 @@ import KeepComponent from "../components/KeepComponent";
 import VaultComponent from "../components/VaultComponent";
 export default {
   name: "profile-page",
+  props: ["keepProp"],
   mounted() {
     this.$store.dispatch("getKeepsByProfile", this.$route.params.id);
     this.$store.dispatch("getVaultsByProfile", this.$route.params.id);
@@ -66,6 +76,9 @@ export default {
     },
     vaults() {
       return this.$store.state.vaults;
+    },
+    profile() {
+      return this.$store.state.profile;
     },
   },
   methods: {

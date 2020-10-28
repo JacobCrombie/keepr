@@ -20,7 +20,7 @@ namespace Keepr.Services
     }
     internal IEnumerable<Vault> GetVaultsByProfile(string profid)
     {
-        return _vaultsRepo.GetVaultsByProfile(profid);
+      return _vaultsRepo.GetVaultsByProfile(profid);
     }
 
     internal Vault GetById(int id)
@@ -45,20 +45,20 @@ namespace Keepr.Services
       {
         throw new Exception("Invalid Edit Permissions, This Vault isn't yours to Edit");
       }
-      updatedVault.Name = updatedVault.Name != null ? updatedVault.Name :data.Name;
+      updatedVault.Name = updatedVault.Name != null ? updatedVault.Name : data.Name;
       updatedVault.Description = updatedVault.Description != null ? updatedVault.Description : data.Description;
       return _vaultsRepo.Edit(updatedVault);
     }
 
     internal string Delete(int id, string userId)
     {
-        Vault data = GetById(id);
-        if (data.CreatorId != userId)
-        {
-            throw new Exception("Invalid Edit Permissions, This Vault isn't yours to delete.");
-        }
-         _vaultsRepo.Delete(id);
-         return "Vault Removed;";
+      Vault data = GetById(id);
+      if (data.CreatorId != userId)
+      {
+        throw new Exception("Invalid Edit Permissions, This Vault isn't yours to delete.");
+      }
+      _vaultsRepo.Delete(id);
+      return "Vault Removed;";
     }
 
   }
