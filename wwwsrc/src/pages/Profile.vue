@@ -2,13 +2,13 @@
   <div class="profile-page container-fluid">
     <div class="row">
       <div class="card">
-        <img class="card-img-right" v-if="this.$route.params.id == searchedProfile.id" :src="searchedProfile.picture" alt="" />
-        <img class="card-img-right" v-if="this.$route.params.id == profile.id" :src="profile.picture" alt="" />
+        <img class="card-img-right" v-if="this.$route.params.id == searchedProfile.id" :src="searchedProfile.picture"/>
+        <img class="card-img-right" v-else :src="profile.picture"/>
         <div class="card-body">
           <h4 class="card-title" v-if="this.$route.params.id == searchedProfile.id">{{ searchedProfile.name }}</h4>
-          <h4 class="card-title" v-if="this.$route.params.id == profile.id">{{ profile.name }}</h4>
+          <h4 class="card-title" v-else>{{ profile.name }}</h4>
           <p class="card-text" v-if="this.$route.params.id == searchedProfile.id">{{ searchedProfile.email }}</p>
-          <p class="card-text" v-if="this.$route.params.id == profile.id">{{ profile.email }}</p>
+          <p class="card-text" v-else>{{ profile.email }}</p>
         </div>
       </div>
     </div>
