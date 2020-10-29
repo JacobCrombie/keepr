@@ -14,6 +14,7 @@ export default {
   name: "vault-page",
   mounted() {
     this.$store.dispatch("getKeepsByVaultId", this.$route.params.id);
+    this.$store.dispatch("getVaultById", this.$route.params.id);
   },
   data() {
     return {};

@@ -22,7 +22,7 @@ namespace Keepr.Services
     internal IEnumerable<Vault> GetVaultsByProfile(string profid)
     {
       IEnumerable<Vault> vaults = _vaultsRepo.GetVaultsByProfile(profid);
-      return vaults.ToList().FindAll(v => v.IsPrivate != true);
+      return vaults.ToList().FindAll(v => v.IsPrivate != true || v.CreatorId == profid);
     }
 
     internal Vault GetById(int id, string userId)

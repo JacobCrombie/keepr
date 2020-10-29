@@ -60,7 +60,7 @@
               Delete Keep
             </button>
             <button
-              v-if="this.$route.name == 'Vault'"
+              v-if="this.$route.name == 'Vault' && profile.id == activeVault.creatorId"
               type="button"
               class="btn btn-secondary"
               data-dismiss="modal"
@@ -107,6 +107,9 @@ export default {
     profile() {
       return this.$store.state.profile;
     },
+    activeVault(){
+      return this.$store.state.activeVault
+    }
   },
   methods: {
     viewPlus(keep) {

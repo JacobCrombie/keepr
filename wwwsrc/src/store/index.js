@@ -15,7 +15,8 @@ export default new Vuex.Store({
       creator: {}
     },
     vaults: [],
-    myVaults: []
+    myVaults: [],
+    activeVault:{}
   },
   mutations: {
 
@@ -44,6 +45,9 @@ export default new Vuex.Store({
     },
     setMyVaults(state, vaults) {
       state.myVaults = vaults
+    },
+    setActiveVault(state, vault){
+      state.activeVault = vault
     }
 
     //#endregion
@@ -199,6 +203,15 @@ export default new Vuex.Store({
       try {
         await api.delete("vaults/" + vault.id)
         dispatch("getMyVaults", vault.creatorId)
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async getVaultById({commit,dispatch}, vaultId){
+      try {
+        let res = await api.get("vaults/"+ vaultId)
+        console.log(res.data);
+        commit("setActiveVault", res.data)
       } catch (error) {
         console.error(error);
       }
