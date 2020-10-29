@@ -2,31 +2,23 @@ import Swal from "sweetalert2"
 
 export default class SweetAlert {
 
-  static async viewActiveKeep(title = "title", text = "text", imageUrl = "image") {
-    // Swal.fire({
-    //   title: '<strong>HTML <u>example</u></strong>',
-    //   icon: 'info',
-    //   html:
-    //     'You can use <b>bold text</b>, ' +
-    //     '<a href="//sweetalert2.github.io">links</a> ' +
-    //     'and other HTML tags',
-    //   showCloseButton: true,
-    //   showCancelButton: true,
-    //   focusConfirm: false,
-    //   confirmButtonText:
-    //     '<i class="fa fa-thumbs-up"></i> Great!',
-    //   confirmButtonAriaLabel: 'Thumbs up, great!',
-    //   cancelButtonText:
-    //     '<i class="fa fa-thumbs-down"></i>',
-    //   cancelButtonAriaLabel: 'Thumbs down',
-
-    // })
-
+  static async delete(title = "title", text = "text", imageUrl = "image") {
     Swal.fire({
-      title: title,
-      text: text,
-      imageUrl: imageUrl,
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire(
+          'Deleted!',
+          'Your file has been deleted.',
+          'success'
+        )
+      }
     })
   }
-
 }

@@ -107,7 +107,6 @@ export default {
     this.$store.dispatch("getKeepsByProfile", this.$route.params.id);
     this.$store.dispatch("getVaultsByProfile", this.$route.params.id);
     this.$store.dispatch("getProfileById", this.$route.params.id);
-    console.log(this.$route.name);
   },
   data() {
     return {
