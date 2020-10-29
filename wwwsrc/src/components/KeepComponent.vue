@@ -5,7 +5,7 @@
         class="card-img-top"
         :src="keepProp.img"
         data-toggle="modal"
-        data-target="#keep-modal"
+        :data-target="'#keep-modal-'+keepProp.id"
         @click="setActiveKeep"
       />
       <div class="card-body">
@@ -14,7 +14,7 @@
       </div>
     </div>
 
-    <div class="modal fade" id="keep-modal" tabindex="-1" role="dialog">
+    <div class="modal fade" :id="'keep-modal-'+keepProp.id" tabindex="-1" role="dialog">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content card">
           <div class="modal-header">
@@ -51,11 +51,12 @@
               type="button"
               class="btn btn-secondary"
               data-dismiss="modal"
+              @click="deleteKeep"
             >
-              Close
+              Delete Keep
             </button>
             <button type="button" class="btn btn-primary" @click="addKeep">
-              Save changes
+              Add To My Vault
             </button>
             <div class="form-group">
               <label for=""></label>
@@ -123,6 +124,12 @@ export default {
     profilePush() {
       this.$store.dispatch("getProfileById", this.keepProp.creator.id)
     },
+    deleteKeep(){
+      if (this.$store.state.profile.id == this.activeKeep.creatorId) {
+        this.$store.dispatch("deleteKeep", this.keepProp)
+      }
+      return
+    }
   },
   components: { router },
 };

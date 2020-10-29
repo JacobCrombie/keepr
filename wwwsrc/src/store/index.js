@@ -83,10 +83,6 @@ export default new Vuex.Store({
       let res = await api.get("keeps")
       commit("setKeeps", res.data)
     },
-    async deleteKeep({ commit, dispatch }, keepId) {
-      await api.delete("keeps/" + keepId)
-      dispatch("getAllKeeps")
-    },
     async createKeep({ commit, dispatch }, keepData) {
       await api.post("keeps", keepData)
       dispatch("getKeepsByProfile", keepData.creatorId)
@@ -124,6 +120,14 @@ export default new Vuex.Store({
           dispatch("getKeepsByProfile", keepEdit.creatorId)
         }
         dispatch("getAllKeeps")
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async deleteKeep({commit, dispatch}, keep){
+      try {
+        await api.delete("keeps/"+keep.id)
+        dispatch("getKeepsByProfile", keep.creatorId)
       } catch (error) {
         console.error(error);
       }
