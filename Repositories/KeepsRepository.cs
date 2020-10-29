@@ -74,10 +74,11 @@ namespace Keepr.Repositories
       JOIN profiles prof ON prof.id = keep.creatorId
       WHERE vaultId = @id;
       ";
-      return _keepsDb.Query<VaultKeepViewModel, Profile, VaultKeepViewModel>(sql, (keep , profile)=>{
+      return _keepsDb.Query<VaultKeepViewModel, Profile, VaultKeepViewModel>(sql, (keep, profile) =>
+      {
         keep.Creator = profile;
         return keep;
-      },new {id}, splitOn: "id");
+      }, new { id }, splitOn: "id");
     }
 
     internal IEnumerable<Keep> GetKeepsByProfile(string profileId)

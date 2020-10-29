@@ -5,8 +5,8 @@
         class="card-img-top"
         :src="keepProp.img"
         data-toggle="modal"
-        :data-target="'#keep-modal-'+keepProp.id"
-        @click="setActiveKeep"
+        data-target="#keep-modal"
+        @click="viewPlus(keepProp)"
       />
       <div class="card-body">
         <h4 class="card-title">{{ keepProp.name }}</h4>
@@ -14,7 +14,7 @@
       </div>
     </div>
 
-    <div class="modal fade" :id="'keep-modal-'+keepProp.id" tabindex="-1" role="dialog">
+    <div class="modal fade" id="keep-modal" tabindex="-1" role="dialog">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content card">
           <div class="modal-header">
@@ -48,12 +48,25 @@
             <p>Views:{{ activeKeep.views }}</p>
             <p>Kept:{{ activeKeep.keeps }}</p>
             <button
+              v-if="
+                this.$route.name == 'Profile' &&
+                this.profile.id == activeKeep.creatorId
+              "
               type="button"
               class="btn btn-secondary"
               data-dismiss="modal"
               @click="deleteKeep"
             >
               Delete Keep
+            </button>
+            <button
+              v-if="this.$route.name == 'Vault'"
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+              @click="deleteVaultKeep"
+            >
+              Remove Keep From Vault
             </button>
             <button type="button" class="btn btn-primary" @click="addKeep">
               Add To My Vault
@@ -85,24 +98,29 @@ export default {
     };
   },
   computed: {
-    activeKeep() {
-      return this.$store.state.activeKeep;
-    },
     myVaults() {
       return this.$store.state.myVaults;
     },
+    activeKeep() {
+      return this.$store.state.activeKeep;
+    },
+    profile() {
+      return this.$store.state.profile;
+    },
   },
   methods: {
-    setActiveKeep() {
-      let count = this.keepProp.views;
+    viewPlus(keep) {
+      this.$store.dispatch("setActiveKeep", keep);
+      let count = this.activeKeep.views;
       count++;
       let keepEdit = {
         views: count,
-        id: this.keepProp.id,
-        creatorId: this.keepProp.creator.id,
+        id: this.activeKeep.id,
+        creatorId: this.activeKeep.creator.id,
+        route: this.$route.name,
+        vaultId: this.$route.params.id,
       };
-      this.$store.dispatch("editKeep", keepEdit);
-      this.$store.dispatch("activeKeep", this.keepProp);
+      this.$store.dispatch("editKeepViews", keepEdit);
     },
     addKeep() {
       let addKeepData = {
@@ -111,25 +129,33 @@ export default {
       };
       this.$store.dispatch("addKeepToVault", addKeepData);
       let count = this.activeKeep.keeps;
-      debugger
-      count ++;
+      count++;
       let keepEdit = {
         keeps: count,
         id: this.activeKeep.id,
-        creatorId: this.activeKeep.creator.id
-      }
-      this.$store.dispatch("editKeep", keepEdit)
+        creatorId: this.activeKeep.creator.id,
+        route: this.$route.name,
+        vaultId: this.$route.params.id,
+      };
+      this.$store.dispatch("editKeepKeeps", keepEdit);
       this.vaultSelect = "";
     },
     profilePush() {
-      this.$store.dispatch("getProfileById", this.keepProp.creator.id)
+      this.$store.dispatch("getProfileById", this.activeKeep.creator.id);
     },
-    deleteKeep(){
+    deleteKeep() {
       if (this.$store.state.profile.id == this.activeKeep.creatorId) {
-        this.$store.dispatch("deleteKeep", this.keepProp)
+        this.$store.dispatch("deleteKeep", this.activeKeep);
       }
-      return
-    }
+      return;
+    },
+    deleteVaultKeep() {
+      let vaultKeep = {
+        vaultId: this.$route.params.id,
+        id: this.activeKeep.vaultKeepId,
+      };
+      this.$store.dispatch("deleteVaultKeep", vaultKeep);
+    },
   },
   components: { router },
 };

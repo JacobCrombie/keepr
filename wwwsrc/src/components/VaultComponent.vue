@@ -2,8 +2,11 @@
   <div class="vault-component col-4">
     <div class="card">
       <div class="card-body">
-        <p>{{vaultProp.isPrivate}}</p>
-        <i class="fa fa-plus text-success cursor" @click="openVault"></i>
+        <p>{{ vaultProp.isPrivate }}</p>
+        <button class="btn btn-success" @click="openVault">Open Vault</button>
+        <button class="btn btn-danger" @click="deleteVault">
+          DELETE VAULT
+        </button>
         <h4 class="card-title">{{ vaultProp.name }}</h4>
       </div>
     </div>
@@ -23,6 +26,9 @@ export default {
   methods: {
     openVault() {
       router.push({ name: "Vault", params: { id: this.vaultProp.id } });
+    },
+    deleteVault() {
+      this.$store.dispatch("deleteVault", this.vaultProp);
     },
   },
   components: { router },

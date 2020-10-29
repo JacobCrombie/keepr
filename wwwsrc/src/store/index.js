@@ -23,7 +23,7 @@ export default new Vuex.Store({
     setProfile(state, profile) {
       state.profile = profile;
     },
-    setSearchedProfile(state, profile){
+    setSearchedProfile(state, profile) {
       state.searchedProfile = profile;
     },
     //#endregion
@@ -63,9 +63,9 @@ export default new Vuex.Store({
         console.error(error);
       }
     },
-    async getProfileById({commit, dispatch}, profId){
+    async getProfileById({ commit, dispatch }, profId) {
       try {
-        let res = await api.get("profiles/"+ profId)
+        let res = await api.get("profiles/" + profId)
         commit("setSearchedProfile", res.data)
         router.push({
           name: "Profile",
@@ -87,7 +87,7 @@ export default new Vuex.Store({
       await api.post("keeps", keepData)
       dispatch("getKeepsByProfile", keepData.creatorId)
     },
-    activeKeep({ commit, dispatch }, activeKeep) {
+    setActiveKeep({ commit, dispatch }, activeKeep) {
       commit("setActiveKeep", activeKeep)
     },
     async getKeepsByProfile({ commit, dispatch }, profId) {
@@ -113,21 +113,56 @@ export default new Vuex.Store({
         console.error(error);
       }
     },
-    async editKeep({ commit, dispatch }, keepEdit) {
+    async editKeepViews({ commit, dispatch }, keepEdit) {
       try {
-        await api.put("keeps/" + keepEdit.id, keepEdit)
-        if (keepEdit.creatorId == this.state.profile.id) {
+        let edit = {
+          views: keepEdit.views,
+          id: keepEdit.id,
+        }
+        await api.put("keeps/" + keepEdit.id, edit)
+        if (keepEdit.route == "Profile") {
           dispatch("getKeepsByProfile", keepEdit.creatorId)
+          return
+        } else if (keepEdit.route == "Vault") {
+          dispatch("getKeepsByVaultId", keepEdit.vaultId)
+          return
         }
         dispatch("getAllKeeps")
       } catch (error) {
         console.error(error);
       }
     },
-    async deleteKeep({commit, dispatch}, keep){
+    async editKeepKeeps({ commit, dispatch }, keepEdit) {
       try {
-        await api.delete("keeps/"+keep.id)
+        let edit = {
+          keeps: keepEdit.keeps,
+          id: keepEdit.id,
+        }
+        await api.put("keeps/" + keepEdit.id, edit)
+        if (keepEdit.route == "Profile") {
+          dispatch("getKeepsByProfile", keepEdit.creatorId)
+          return
+        } else if (keepEdit.route == "Vault") {
+          dispatch("getKeepsByVaultId", keepEdit.vaultId)
+          return
+        }
+        dispatch("getAllKeeps")
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async deleteKeep({ commit, dispatch }, keep) {
+      try {
+        await api.delete("keeps/" + keep.id)
         dispatch("getKeepsByProfile", keep.creatorId)
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async deleteVaultKeep({ commit, dispatch }, vaultkeep) {
+      try {
+        await api.delete("vaultkeeps/" + vaultkeep.id)
+        dispatch("getKeepsByVaultId", vaultkeep.vaultId)
       } catch (error) {
         console.error(error);
       }
@@ -155,7 +190,16 @@ export default new Vuex.Store({
     async createVault({ commit, dispatch }, vaultData) {
       try {
         await api.post("vaults", vaultData)
-        dispatch("getVaultsByProfile", vaultData.creatorId)
+        dispatch("getMyVaults", vaultData.creatorId)
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async deleteVault({ commit, dispatch }, vault) {
+      try {
+        debugger
+        await api.delete("vaults/" + vault.id)
+        dispatch("getMyVaults", vault.creatorId)
       } catch (error) {
         console.error(error);
       }
