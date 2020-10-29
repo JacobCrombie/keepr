@@ -34,9 +34,24 @@ namespace Keepr.Services
       return _keepsRepo.Create(newKeep);
     }
 
-    internal Keep Edit(Keep updatedKeep)
+    internal Keep EditViewKeeps(Keep updatedKeep)
     {
       Keep data = GetById(updatedKeep.Id);
+      updatedKeep.Description = data.Description;
+      updatedKeep.Name = data.Name;
+      updatedKeep.Img = data.Img;
+      updatedKeep.Keeps = updatedKeep.Keeps != 0 ? updatedKeep.Keeps : data.Keeps;
+      updatedKeep.Views = updatedKeep.Views != 0 ? updatedKeep.Views : data.Views;
+      updatedKeep.Shares = updatedKeep.Shares != 0 ? updatedKeep.Shares : data.Shares;
+      return _keepsRepo.Edit(updatedKeep);
+    }
+    internal object Edit(Keep updatedKeep, string id)
+    {
+      Keep data = GetById(updatedKeep.Id);
+      if (data.CreatorId != id)
+      {
+          throw new Exception("Invalid Edit Permissions");
+      }
       updatedKeep.Description = updatedKeep.Description != null ? updatedKeep.Description : data.Description;
       updatedKeep.Name = updatedKeep.Name != null ? updatedKeep.Name : data.Name;
       updatedKeep.Img = updatedKeep.Img != null ? updatedKeep.Img : data.Img;
@@ -66,5 +81,6 @@ namespace Keepr.Services
       _keepsRepo.Delete(id);
       return "Keep Removed";
     }
+
   }
 }

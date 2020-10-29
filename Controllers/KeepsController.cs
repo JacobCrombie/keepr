@@ -62,13 +62,27 @@ namespace Keepr.Controllers
     }
 
     //REVIEW might need to add more checks here if i impliment edit keep data instead of just counts
-    [HttpPut("{id}")]
-    public ActionResult<Keep> Edit([FromBody] Keep updatedKeep, int id)
+    [HttpPut("{id}/viewkeeps")]
+    public ActionResult<Keep> EditViewKeeps([FromBody] Keep updatedKeep, int id)
     {
       try
       {
         updatedKeep.Id = id;
-        return Ok(_keepsServ.Edit(updatedKeep));
+        return Ok(_keepsServ.EditViewKeeps(updatedKeep));
+      }
+      catch (Exception e)
+      {
+        return BadRequest(e.Message);
+      }
+    }
+    [HttpPut("{id}")]
+    [Authorize]
+    public async Task<ActionResult<Keep>> Edit([FromBody] Keep updatedKeep, int id)
+    {
+      try
+      {
+          Profile userInfo = await HttpContext.GetUserInfoAsync<Profile>();
+          return Ok(_keepsServ.Edit(updatedKeep, userInfo.Id));
       }
       catch (Exception e)
       {

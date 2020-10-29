@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Keepr.Models;
 using Keepr.Repositories;
 
@@ -20,15 +21,20 @@ namespace Keepr.Services
     }
     internal IEnumerable<Vault> GetVaultsByProfile(string profid)
     {
-      return _vaultsRepo.GetVaultsByProfile(profid);
+      IEnumerable<Vault> vaults = _vaultsRepo.GetVaultsByProfile(profid);
+      return vaults.ToList().FindAll(v => v.IsPrivate != true);
     }
 
-    internal Vault GetById(int id)
+    internal Vault GetById(int id, string userId)
     {
       Vault data = _vaultsRepo.GetById(id);
       if (data == null)
       {
         throw new Exception("Invalid Id");
+      }
+      if (data.IsPrivate == true && data.CreatorId != userId)
+      {
+          throw new Exception("This Vault is Private");
       }
       return data;
     }
@@ -40,7 +46,7 @@ namespace Keepr.Services
 
     internal Vault Edit(Vault updatedVault, string userId)
     {
-      Vault data = GetById(updatedVault.Id);
+      Vault data = GetById(updatedVault.Id, userId);
       if (data.CreatorId != userId)
       {
         throw new Exception("Invalid Edit Permissions, This Vault isn't yours to Edit");
@@ -52,7 +58,7 @@ namespace Keepr.Services
 
     internal string Delete(int id, string userId)
     {
-      Vault data = GetById(id);
+      Vault data = GetById(id, userId);
       if (data.CreatorId != userId)
       {
         throw new Exception("Invalid Edit Permissions, This Vault isn't yours to delete.");

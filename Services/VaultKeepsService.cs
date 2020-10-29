@@ -23,12 +23,15 @@ namespace Keepr.Services
         throw new Exception("Keep already in vault");
     }
 
-    internal VaultKeep Delete(int id)
+    internal VaultKeep Delete(int id, string userInfoId)
     {
         VaultKeep data = _vaultKeepRepo.GetById(id);
         if(data == null)
         {
             throw new Exception("Invalid Id");
+        }else if (data.CreatorId != userInfoId)
+        {
+            throw new Exception("Invalid Edit Permissions");
         }
         _vaultKeepRepo.Delete(id);
         return data;
