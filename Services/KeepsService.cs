@@ -8,10 +8,12 @@ namespace Keepr.Services
   public class KeepsService
   {
     private readonly KeepsRepository _keepsRepo;
+    private readonly VaultsRepository _vaultsRepo;
 
-    public KeepsService(KeepsRepository keepsRepo)
+    public KeepsService(KeepsRepository keepsRepo, VaultsRepository vaultsRepo)
     {
       _keepsRepo = keepsRepo;
+      _vaultsRepo = vaultsRepo;
     }
 
     internal IEnumerable<Keep> GetAll()
@@ -50,7 +52,7 @@ namespace Keepr.Services
       Keep data = GetById(updatedKeep.Id);
       if (data.CreatorId != id)
       {
-          throw new Exception("Invalid Edit Permissions");
+        throw new Exception("Invalid Edit Permissions");
       }
       updatedKeep.Description = updatedKeep.Description != null ? updatedKeep.Description : data.Description;
       updatedKeep.Name = updatedKeep.Name != null ? updatedKeep.Name : data.Name;
@@ -61,8 +63,14 @@ namespace Keepr.Services
       return _keepsRepo.Edit(updatedKeep);
     }
 
-    internal IEnumerable<VaultKeepViewModel> GetKeepsByVaultId(int id)
+    // FIXME lkjadl;sfjla;dsfkja add creator check
+    internal IEnumerable<VaultKeepViewModel> GetKeepsByVaultId(int id, string userInfoId)
     {
+      Vault data = _vaultsRepo.GetById(id);
+      if (data.CreatorId != userInfoId)
+      {
+        throw new Exception("Invalid Edit Permissions");
+      }
       return _keepsRepo.GetKeepsByVaultId(id);
     }
 

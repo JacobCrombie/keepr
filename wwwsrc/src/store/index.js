@@ -123,7 +123,7 @@ export default new Vuex.Store({
           views: keepEdit.views,
           id: keepEdit.id,
         }
-        await api.put("keeps/" + keepEdit.id, edit)
+        await api.put("keeps/" + keepEdit.id+"/viewkeeps", edit)
         if (keepEdit.route == "Profile") {
           dispatch("getKeepsByProfile", keepEdit.creatorId)
           return
@@ -142,7 +142,7 @@ export default new Vuex.Store({
           keeps: keepEdit.keeps,
           id: keepEdit.id,
         }
-        await api.put("keeps/" + keepEdit.id, edit)
+        await api.put("keeps/" + keepEdit.id+"/viewkeeps", edit)
         if (keepEdit.route == "Profile") {
           dispatch("getKeepsByProfile", keepEdit.creatorId)
           return

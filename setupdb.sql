@@ -44,11 +44,14 @@
 
 /* TRUNCATE TABLE keeps; */
 
- /* CREATE TABLE vaultkeeps
+/* DROP TABLE vaultkeeps;
+
+ CREATE TABLE vaultkeeps
  (
    id INT NOT NULL AUTO_INCREMENT,
    keepId INT,
    vaultId INT,
+   creatorId VARCHAR(255) NOT NULL,
    PRIMARY KEY (id),
 
    FOREIGN KEY (keepId)
@@ -56,7 +59,12 @@
      ON DELETE CASCADE,
    FOREIGN KEY (vaultId)
      REFERENCES vaults (id)
+     ON DELETE CASCADE,
+   FOREIGN KEY (creatorId)
+     REFERENCES profiles (id)
      ON DELETE CASCADE
  ); */
 
 /* DROP TABLE vaults; */
+/* ALTER TABLE vaultkeeps ADD creatorId string; */
+

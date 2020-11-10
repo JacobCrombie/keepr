@@ -29,7 +29,8 @@ namespace Keepr.Services
         if(data == null)
         {
             throw new Exception("Invalid Id");
-        }else if (data.CreatorId != userInfoId)
+        }
+         if (data.CreatorId != userInfoId)
         {
             throw new Exception("Invalid Edit Permissions");
         }

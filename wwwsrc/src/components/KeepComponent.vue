@@ -10,7 +10,7 @@
       />
       <div class="card-body">
         <h4 class="card-title">{{ keepProp.name }}</h4>
-        <img class="rounded-circle" :src="keepProp.creator.picture" alt="" />
+        <img class="rounded-circle" :src="keepProp.creator.picture" alt="" @click="profilePush"/>
       </div>
     </div>
 
@@ -144,7 +144,7 @@ export default {
       this.vaultSelect = "";
     },
     profilePush() {
-      this.$store.dispatch("getProfileById", this.activeKeep.creator.id);
+      this.$store.dispatch("getProfileById", this.keepProp.creator.id);
     },
     deleteKeep() {
       if (this.$store.state.profile.id == this.activeKeep.creatorId) {

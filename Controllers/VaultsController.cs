@@ -39,7 +39,15 @@ namespace Keepr.Controllers
     {
       try
       {
-        Profile userInfo = await HttpContext.GetUserInfoAsync<Profile>();
+        Profile userInfo = null;
+        try
+        {
+          userInfo = await HttpContext.GetUserInfoAsync<Profile>();
+        }
+        catch (System.Exception)
+        {
+          Console.WriteLine("no profile");
+        }
         return Ok(_vaultServ.GetById(id, userInfo?.Id));
       }
       catch (Exception e)
@@ -48,11 +56,20 @@ namespace Keepr.Controllers
       }
     }
     [HttpGet("{id}/keeps")]
-    public ActionResult<IEnumerable<VaultKeepViewModel>> GetKeeps(int id)
+    public async Task<ActionResult<IEnumerable<VaultKeepViewModel>>> GetKeeps(int id)
     {
       try
       {
-        return Ok(_keepServ.GetKeepsByVaultId(id));
+        Profile userInfo = null;
+        try
+        {
+          userInfo = await HttpContext.GetUserInfoAsync<Profile>();
+        }
+        catch (System.Exception)
+        {
+          Console.WriteLine("no profile");
+        }
+        return Ok(_keepServ.GetKeepsByVaultId(id, userInfo?.Id));
       }
       catch (Exception e)
       {
