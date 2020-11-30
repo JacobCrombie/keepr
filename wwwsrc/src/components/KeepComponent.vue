@@ -1,16 +1,20 @@
 <template>
-  <div class="keep-component col-3 my-2">
-    <div class="card">
-      <img
-        class="card-img-top"
-        :src="keepProp.img"
-        data-toggle="modal"
-        data-target="#keep-modal"
-        @click="viewPlus(keepProp)"
-      />
-      <div class="card-body">
+  <div class="keep-component">
+    <div
+      class="card"
+      data-toggle="modal"
+      data-target="#keep-modal"
+      @click="viewPlus(keepProp)"
+    >
+      <img class="card-img" :src="keepProp.img" />
+      <div class="card-img-overlay d-flex">
         <h4 class="card-title">{{ keepProp.name }}</h4>
-        <img class="rounded-circle" :src="keepProp.creator.picture" alt="" @click="profilePush"/>
+        <img
+          class="rounded-circle align-self-end ml-auto h-25 w-25"
+          :src="keepProp.creator.picture"
+          alt=""
+          @click.stop="profilePush"
+        />
       </div>
     </div>
 
@@ -60,7 +64,10 @@
               Delete Keep
             </button>
             <button
-              v-if="this.$route.name == 'Vault' && profile.id == activeVault.creatorId"
+              v-if="
+                this.$route.name == 'Vault' &&
+                profile.id == activeVault.creatorId
+              "
               type="button"
               class="btn btn-secondary"
               data-dismiss="modal"
@@ -107,9 +114,9 @@ export default {
     profile() {
       return this.$store.state.profile;
     },
-    activeVault(){
-      return this.$store.state.activeVault
-    }
+    activeVault() {
+      return this.$store.state.activeVault;
+    },
   },
   methods: {
     viewPlus(keep) {
@@ -168,5 +175,9 @@ export default {
 <style scoped>
 .modal-dialog {
   max-width: 50vw;
+}
+img {
+  max-width: 100%;
+  height: 100%;
 }
 </style>
